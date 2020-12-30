@@ -340,6 +340,17 @@ export const readonlyCollectionHandlers: ProxyHandler<CollectionTypes> = {
   get: createInstrumentationGetter(true, false)
 }
 
+export function getCollectionHandlers(
+  isReadonly: Boolean,
+  isShallow: Boolean
+): ProxyHandler<object> {
+  return isReadonly
+    ? readonlyCollectionHandlers
+    : isShallow
+      ? shallowCollectionHandlers
+      : mutableCollectionHandlers
+}
+
 function checkIdentityKeys(
   target: CollectionTypes,
   has: (key: unknown) => boolean,
